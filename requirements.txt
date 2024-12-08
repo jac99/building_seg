@@ -1,0 +1,6 @@
+lightning
+segmentation-models-pytorch
+tqdm
+matplotlib
+albumentations
+wandb
