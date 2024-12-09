@@ -37,12 +37,13 @@ def process_image(image_filepath: str, model: nn.Module, device, output_path: st
     # mask is (C=1, H, W) tensor of logits
     threshold = 0.5
     mask = ((mask.sigmoid() > threshold).permute(1,2,0) * 255).numpy().astype(np.uint8)
-    # Mask blended with original image
-    blended_mask = cv2.addWeighted(image, .4, mask, 1., 0.)
 
     # mask is (H, W, C=1) ndarray of uint8
     temp = np.zeros_like(mask)
     mask = np.concatenate([mask, temp, temp], axis=2)     # (H, W, C=3)
+    # Mask blended with original image
+    blended_mask = cv2.addWeighted(image, .4, mask, 1., 0.)
+
     image_name = os.path.split(image_filepath)[1]
     out_filepath =os.path.join(output_path, "mask_" + image_name)
     cv2.imwrite(out_filepath, mask)
