@@ -164,6 +164,11 @@ if __name__ == '__main__':
             architecture = "fpn"
             encoder_name = "efficientnet-b3"
             loss_fn = "ce"
+        elif config == 7:
+            num_epochs = 500
+            architecture = "fpn"
+            encoder_name = "efficientnet-b3"
+            loss_fn = "ce"
         else:
             raise NotImplementedError(f"Incorrect config: {config}")
 
