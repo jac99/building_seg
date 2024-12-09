@@ -26,9 +26,9 @@ def preprocess_image(image) -> Tensor:
     return sample['image']
 
 
-def process_image(image: str, model: nn.Module, device, output_path: str):
-    assert os.path.exists(image), f"Cannot access image: {image}"
-    image = cv2.imread(image)
+def process_image(image_filepath: str, model: nn.Module, device, output_path: str):
+    assert os.path.exists(image_filepath), f"Cannot access image: {image_filepath}"
+    image = cv2.imread(image_filepath)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)      # Convert to RGB
     x = preprocess_image(image)
     x = x.to(device)
@@ -37,11 +37,11 @@ def process_image(image: str, model: nn.Module, device, output_path: str):
     # mask is (C=1, H, W) tensor of logits
     threshold = 0.5
     mask = ((mask.sigmoid() > threshold).permute(1,2,0) * 255).numpy().astype(np.uint8)
+
     # mask is (H, W, C=1) ndarray of uint8
-    # Make the segmentation results blue
     temp = np.zeros_like(mask)
     mask = np.concatenate([mask, temp, temp], axis=2)     # (H, W, C=3)
-    image_name = os.path.split(image)[1]
+    image_name = os.path.split(image_filepath)[1]
     out_filepath =os.path.join(output_path, "mask_" + image_name)
     cv2.imwrite(out_filepath, mask)
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    assert os.path.exists(args.split), f"Cannot access images folder: {args.image_path}"
+    assert os.path.exists(args.image_path), f"Cannot access images folder: {args.image_path}"
     assert os.path.exists(args.checkpoint), f"Cannot access model checkpoint: {args.checkpoint}"
 
     print(f"Images folder: {args.image_path}")
@@ -74,6 +74,7 @@ if __name__ == '__main__':
     images = os.listdir(args.image_path)
     images = [e for e in images if os.path.splitext(e)[1] == '.png']
     images = filter_images(images, args.split)
+    images = [os.path.join(args.image_path, e) for e in images]
     print(f"{len(images)} images in {args.split} split")
 
     # Instantiate the model and load weights

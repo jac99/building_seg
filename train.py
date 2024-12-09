@@ -130,7 +130,7 @@ if __name__ == '__main__':
         batch_size = 2
         max_size = 2
         num_epochs = 2
-        architecture = "manet"
+        architecture = "fpn"
         encoder_name = "efficientnet-b0"
         loss_fn = "ce"
     else:
@@ -198,6 +198,6 @@ if __name__ == '__main__':
     # Save the final model weights
     timestamp = f"{datetime.now():%Y%m%d_%H%M%S}"
     os.makedirs(weights_folder, exist_ok=True)
-    model_filepath = os.path.join("..", weights_folder, f"semseg_{timestamp}")
+    model_filepath = os.path.join(weights_folder, f"semseg_{timestamp}")
     model.model.save_pretrained(model_filepath)
     print(f"Final model saved to: {model_filepath}")
