@@ -123,7 +123,7 @@ if __name__ == '__main__':
     batch_size = 24
     encoder_weights = "imagenet"
 
-    config = 6
+    config = 7
 
     if debug:
         num_workers = 0
