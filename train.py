@@ -123,8 +123,6 @@ if __name__ == '__main__':
     batch_size = 24
     encoder_weights = "imagenet"
 
-    config = 7
-
     if debug:
         num_workers = 0
         batch_size = 2
@@ -134,45 +132,10 @@ if __name__ == '__main__':
         encoder_name = "efficientnet-b0"
         loss_fn = "ce"
     else:
-        if config == 1:
-            num_epochs = 32
-            architecture = "Linknet"
-            encoder_name = "efficientnet-b1"
-            loss_fn = "dice"
-        elif config == 2:
-            num_epochs = 64
-            architecture =  "FPN"
-            encoder_name = "efficientnet-b1"
-            loss_fn = "ce"
-        elif config == 3:
-            num_epochs = 64
-            architecture = "FPN"
-            encoder_name = "efficientnet-b1"
-            loss_fn = "ce"
-        elif config == 4:
-            num_epochs = 96
-            architecture = "pspnet"
-            encoder_name = "efficientnet-b1"
-            loss_fn = "ce"
-        elif config == 5:
-            num_epochs = 96
-            architecture = "manet"
-            encoder_name = "efficientnet-b3"
-            loss_fn = "ce"
-        elif config == 6:
-            num_epochs = 196
-            architecture = "fpn"
-            encoder_name = "efficientnet-b3"
-            loss_fn = "ce"
-        elif config == 7:
-            num_epochs = 500
-            architecture = "fpn"
-            encoder_name = "efficientnet-b3"
-            loss_fn = "ce"
-        else:
-            raise NotImplementedError(f"Incorrect config: {config}")
-
-    print(f"Training config: {config}")
+        num_epochs = 196
+        architecture = "fpn"
+        encoder_name = "efficientnet-b3"
+        loss_fn = "ce"
 
     transforms = get_augmentations()
     datasets = {
