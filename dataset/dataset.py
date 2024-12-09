@@ -1,11 +1,8 @@
 import os
-import tqdm
 import cv2
-import numpy as np
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 import matplotlib.pyplot as plt
-import torch
 from torchvision.transforms import v2
 from torch.utils.data import Dataset
 from torch import Tensor
@@ -41,7 +38,6 @@ def visualize(image, mask):
 
 
 def get_augmentations():
-
     height = 256
     width = 256
 
@@ -64,6 +60,15 @@ def get_augmentations():
     return transforms
 
 
+def filter_images(images: list[str], mode: str) -> list[str]:
+    images.sort()
+    if mode == 'train':
+        images = [e for ndx, e in enumerate(images) if ndx % 10 != 0]  # 90% for training
+    else:
+        images = [e for ndx, e in enumerate(images) if ndx % 10 == 0]  # 10% for annotations
+    return images
+
+
 class BuildingSegDataset(Dataset):
     def __init__(self, dataset_root: str, images_folder='geoportal_orto', masks_folder='geoportal_build_mask',
                  mode: str = "train", transform = None, max_size: int = None):
@@ -81,13 +86,8 @@ class BuildingSegDataset(Dataset):
 
         # Index images and masks
         images = os.listdir(self.images_folder)
-        images.sort()
         images = [e for e in images if os.path.splitext(e)[1] == self.img_ext]
-
-        if self.mode == 'train':
-            images = [e for ndx, e in enumerate(images) if ndx % 10 != 0]   # 90% for training
-        else:
-            images = [e for ndx, e in enumerate(images) if ndx % 10 == 0]   # 10% for annotations
+        images = filter_images(images, self.mode)
 
         if self.max_size is not None:
             images = images[:self.max_size]

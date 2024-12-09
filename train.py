@@ -11,7 +11,7 @@ from lightning.pytorch.loggers import WandbLogger
 from lightning.pytorch import Trainer
 import segmentation_models_pytorch as smp
 
-from building_seg.dataset.dataset import BuildingSegDataset, get_augmentations
+from dataset.dataset import BuildingSegDataset, get_augmentations
 
 
 class SegmentationModel(L.LightningModule):
