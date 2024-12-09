@@ -167,6 +167,8 @@ if __name__ == '__main__':
         else:
             raise NotImplementedError(f"Incorrect config: {config}")
 
+    print(f"Training config: {config}")
+
     transforms = get_augmentations()
     datasets = {
         'train': BuildingSegDataset(dataset_root, mode='train', transform=transforms['train'], max_size=max_size),
