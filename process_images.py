@@ -52,7 +52,7 @@ def process_image(image_filepath: str, model: nn.Module, device, output_path: st
 
 
 def process_images(images: list[str], model: nn.Module, device):
-    print(f"Processing video...")
+    print(f"Processing images...")
     output_path = 'output'
     os.makedirs(output_path, exist_ok=True)
 
