@@ -161,7 +161,7 @@ if __name__ == '__main__':
             loss_fn = "ce"
         elif config == 6:
             num_epochs = 196
-            architecture = "manet"
+            architecture = "fpn"
             encoder_name = "efficientnet-b3"
             loss_fn = "ce"
         else:
